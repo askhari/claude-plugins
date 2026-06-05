@@ -1,0 +1,15 @@
+{
+  "name": "askharilabs",
+  "owner": {
+    "name": "David Vidal Villamide",
+    "email": "david@askharilabs.com"
+  },
+  "description": "askharilabs Claude Code plugins.",
+  "plugins": [
+    {
+      "name": "navigate",
+      "source": "./",
+      "description": "Fuzzy idea → running, agent-built software: the navigate skill pipeline (navigate-brainstorm → architect → scaffold-skills → to-prd → to-tasks)."
+    }
+  ]
+}
