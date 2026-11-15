@@ -21,14 +21,18 @@ kickoff ──► architect ──► new-project ──► ┌─ spec ──�
 
 ## Template
 
-The skills operate products generated from the
-[pscaffold copier template](https://github.com/askhari/pscaffold). They rely on the
+This plugin is one half of pscaffold; the other half is the
+[pscaffold copier template](https://github.com/askhari/pscaffold). The plugin decides and
+drives; the template is what gets generated and operated. The skills operate products
+generated from that template. They rely on the
 template's **contract** (recipe names, document layout, task table, PR conventions, the
 `implementer` agent), written down in the template's `CONTRACT.md`.
 
-| Plugin version | Template contract |
-|---|---|
-| 0.x | 1 |
+| Plugin version | Template contract | Template releases |
+|---|---|---|
+| 0.2.x | 1 | v0.1.x |
+
+Changes: [CHANGELOG.md](CHANGELOG.md).
 
 A generated product declares its contract in `.claude/pscaffold.json`; `new-project` and
 `orchestrate` stop if it does not match.

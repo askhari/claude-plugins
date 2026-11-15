@@ -30,6 +30,13 @@ Each skill runs a relentless **one-question-at-a-time** interview that recommend
 at every step, loads any standing preferences first, and skips every branch they already
 settle. Later skills *synthesize* from the rich brief instead of re-interviewing.
 
+## Relation to pscaffold
+
+navigate is a general pipeline for any stack and stands alone. Its sibling in the same
+marketplace, `pscaffold`, is a narrower pipeline bound to the
+[pscaffold template](https://github.com/askhari/pscaffold) (Expo + OpenAPI + Go/Rust API).
+Use one or the other in a project, not both: each ships an `architect` skill.
+
 ## Install
 
 navigate is published in the **askharilabs** marketplace
