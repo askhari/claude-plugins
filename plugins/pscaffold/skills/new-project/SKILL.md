@@ -26,14 +26,15 @@ Turn the decided brief into a working repository. Done means: the repo is genera
 
    ```bash
    # copier is not installed yet in a fresh directory; run it ephemerally:
-   devbox run --config <pscaffold checkout> -- \
-     copier copy --trust --data-file docs/copier-answers.yml <template source> .
-   # or, without a pscaffold checkout:
    uvx copier copy --trust --data-file docs/copier-answers.yml <template source> .
    ```
 
-   `<template source>` is `gh:askhari/pscaffold` (optionally `--vcs-ref vX.Y.Z`) or the
-   path of a local pscaffold checkout when the user is developing the template.
+   `<template source>` is `gh:askhari/pscaffold`; copier uses its newest release tag. Pass
+   `--vcs-ref vX.Y.Z` only if the user asks for a specific release. When the user is
+   developing the template, it is the path of their local pscaffold checkout instead.
+   After rendering, `.claude/pscaffold.json` must say `"contract": 1` (the template contract
+   this plugin speaks, see the plugin README). If it says anything else, stop and tell the
+   user to update the plugin (`claude plugin update pscaffold@askharilabs`).
    copier keeps `docs/brief.md` and `docs/adr/*` (they are in `_skip_if_exists`). Its
    post-generation tasks install dependencies and generate code from the contract.
 

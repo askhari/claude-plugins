@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+  "name": "askharilabs",
+  "owner": { "name": "askharilabs" },
+  "description": "askharilabs Claude Code plugins.",
+  "plugins": [
+    {
+      "name": "navigate",
+      "source": "./plugins/navigate",
+      "description": "Fuzzy idea → running, agent-built software: navigate-brainstorm → architect → scaffold-skills → to-prd → to-tasks."
+    },
+    {
+      "name": "pscaffold",
+      "source": "./plugins/pscaffold",
+      "description": "kickoff → architect → new-project → spec → plan → orchestrate: from a product idea to verified pull requests on the pscaffold template."
+    }
+  ]
+}

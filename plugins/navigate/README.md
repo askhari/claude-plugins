@@ -32,15 +32,15 @@ settle. Later skills *synthesize* from the rich brief instead of re-interviewing
 
 ## Install
 
-This repository is also a Claude Code plugin **marketplace** (`askharilabs`). From inside
-Claude Code:
+navigate is published in the **askharilabs** marketplace
+([askhari/claude-plugins](https://github.com/askhari/claude-plugins)). From inside Claude Code:
 
 ```
-/plugin marketplace add askhari/navigate
+/plugin marketplace add askhari/claude-plugins
 /plugin install navigate@askharilabs
 ```
 
-The first command registers the marketplace from this GitHub repo; the second installs the
+The first command registers the marketplace; the second installs the
 `navigate` plugin and its five skills. Run `/plugin` any time to browse, enable, or remove
 installed plugins.
 
@@ -66,7 +66,6 @@ Run them in order on a fresh repo, then loop `to-prd → to-tasks` per feature.
 
 ```
 .claude-plugin/
-  marketplace.json        # the askharilabs marketplace manifest
   plugin.json             # the navigate plugin manifest (v0.1.0)
 .claude/skills/
   navigate-brainstorm/    # 1 · product brief
