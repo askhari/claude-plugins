@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "navigate",
+  "description": "Fuzzy idea → running, agent-built software: a five-skill interview + templating pipeline (navigate-brainstorm → architect → scaffold-skills → to-prd → to-tasks) that produces the brief, ADRs, PRDs, and git-native tasks autonomous agents build from.",
+  "version": "0.1.0",
+  "author": {
+    "name": "David Vidal Villamide",
+    "email": "david@askharilabs.com"
+  },
+  "keywords": [
+    "interview",
+    "architecture",
+    "prd",
+    "tasks",
+    "agent-pipeline",
+    "scaffolding"
+  ],
+  "skills": [
+    "./.claude/skills/navigate-brainstorm",
+    "./.claude/skills/architect",
+    "./.claude/skills/scaffold-skills",
+    "./.claude/skills/to-prd",
+    "./.claude/skills/to-tasks"
+  ]
+}

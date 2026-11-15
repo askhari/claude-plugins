@@ -1,0 +1,129 @@
+{
+  "model": "sonnet",
+
+  "permissions": {
+    "allow": [
+      "Bash(git diff*)",
+      "Bash(git log*)",
+      "Bash(git status*)",
+      "Bash(git show*)",
+      "Bash(git branch*)",
+      "Bash(ls*)",
+      "Bash(cat*)",
+      "Bash(rg*)",
+      "Bash(find * -type f*)"
+      <!-- IF:USES_TERRAFORM -->,
+      "Bash(terraform fmt*)",
+      "Bash(terraform validate*)",
+      "Bash(terraform plan*)",
+      "Bash(tflint*)"
+      <!-- ENDIF -->
+      <!-- IF:USES_ANSIBLE -->,
+      "Bash(ansible-lint*)",
+      "Bash(ansible-playbook --check*)",
+      "Bash(ansible-playbook --syntax-check*)"
+      <!-- ENDIF -->
+      <!-- IF:USES_PYTHON -->,
+      "Bash(ruff check*)",
+      "Bash(ruff format*)",
+      "Bash(mypy*)",
+      "Bash(pytest*)"
+      <!-- ENDIF -->
+      <!-- IF:USES_GO -->,
+      "Bash(go build*)",
+      "Bash(go test*)",
+      "Bash(go vet*)",
+      "Bash(gofmt*)",
+      "Bash(golangci-lint*)"
+      <!-- ENDIF -->
+      <!-- IF:USES_NODE -->,
+      "Bash(npm test*)",
+      "Bash(npm run lint*)",
+      "Bash(npm run build*)",
+      "Bash(pnpm test*)",
+      "Bash(pnpm lint*)",
+      "Bash(pnpm build*)",
+      "Bash(tsc --noEmit*)",
+      "Bash(eslint*)",
+      "Bash(prettier --check*)"
+      <!-- ENDIF -->
+      <!-- IF:USES_REACT -->,
+      "Bash(vite build*)",
+      "Bash(vitest run*)",
+      "Bash(jest*)"
+      <!-- ENDIF -->
+      <!-- IF:USES_ANGULAR -->,
+      "Bash(ng build*)",
+      "Bash(ng test --watch=false*)",
+      "Bash(ng lint*)"
+      <!-- ENDIF -->
+      <!-- IF:USES_VUE -->,
+      "Bash(vite build*)",
+      "Bash(vitest run*)",
+      "Bash(vue-tsc --noEmit*)"
+      <!-- ENDIF -->
+      <!-- IF:USES_RUST -->,
+      "Bash(cargo build*)",
+      "Bash(cargo test*)",
+      "Bash(cargo check*)",
+      "Bash(cargo clippy*)",
+      "Bash(cargo fmt*)"
+      <!-- ENDIF -->
+      <!-- IF:JAVA_BUILD_MAVEN -->,
+      "Bash(mvn verify*)",
+      "Bash(mvn test*)",
+      "Bash(mvn compile*)",
+      "Bash(mvn spotless:check*)",
+      "Bash(mvn spotless:apply*)"
+      <!-- ENDIF -->
+      <!-- IF:JAVA_BUILD_GRADLE -->,
+      "Bash(gradle check*)",
+      "Bash(gradle test*)",
+      "Bash(gradle build*)",
+      "Bash(./gradlew check*)",
+      "Bash(./gradlew test*)",
+      "Bash(./gradlew build*)",
+      "Bash(./gradlew spotlessCheck*)",
+      "Bash(./gradlew spotlessApply*)"
+      <!-- ENDIF -->
+      <!-- IF:USES_BASH -->,
+      "Bash(shellcheck*)",
+      "Bash(shfmt -d*)",
+      "Bash(shfmt -w*)",
+      "Bash(bash -n*)"
+      <!-- ENDIF -->
+    ],
+    "deny": [
+      "Bash(rm -rf /*)",
+      "Bash(rm -rf ~*)",
+      "Bash(curl * | sh*)",
+      "Bash(curl * | bash*)",
+      "Bash(wget * | sh*)",
+      "Bash(wget * | bash*)"
+      <!-- IF:USES_TERRAFORM -->,
+      "Bash(terraform apply*)",
+      "Bash(terraform destroy*)",
+      "Bash(tofu apply*)",
+      "Bash(tofu destroy*)"
+      <!-- ENDIF -->
+      <!-- IF:USES_ANSIBLE -->,
+      "Bash(ansible-playbook*)"
+      <!-- ENDIF -->
+      <!-- IF:HAS_PROD -->,
+      "Bash(kubectl * --context*prod*)",
+      "Bash(kubectl delete*)",
+      "Bash(*git push*--force*)",
+      "Bash(*git push*-f *)"
+      <!-- ENDIF -->
+    ]
+  },
+
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "command": "bash -c 'f=\"$CLAUDE_TOOL_INPUT_file_path\"; case \"$f\" in *.tf|*.tfvars) command -v terraform >/dev/null && terraform fmt \"$f\" 2>/dev/null ;; *.py) command -v ruff >/dev/null && ruff format \"$f\" 2>/dev/null ;; *.go) command -v gofmt >/dev/null && gofmt -w \"$f\" 2>/dev/null ;; *.rs) command -v rustfmt >/dev/null && rustfmt \"$f\" 2>/dev/null ;; *.ts|*.tsx|*.js|*.jsx|*.vue) command -v prettier >/dev/null && prettier --write \"$f\" 2>/dev/null ;; *.sh|*.bash) command -v shfmt >/dev/null && shfmt -w \"$f\" 2>/dev/null ;; *.java) command -v google-java-format >/dev/null && google-java-format -i \"$f\" 2>/dev/null ;; esac; exit 0' "
+      }
+    ]
+  }
+}
