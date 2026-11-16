@@ -6,6 +6,17 @@ All notable changes to the `pscaffold` plugin. Format:
 
 ## [Unreleased]
 
+## [0.2.1] - 2026-11-16
+
+Speaks template contract **1** (pscaffold template `v0.1.x`; agent identity needs `v0.1.1`).
+
+### Added
+- `architect` writes `agent_name` / `agent_email`, defaulting to the developer's
+  `git config pscaffold.agentName` / `pscaffold.agentEmail`.
+- `orchestrate` briefs workers with their model and task ID for `just agent-identity`, merges
+  with merge commits only (`gh pr merge --auto --merge`) and reports models from the
+  `Agent-Model` trailers.
+
 ## [0.2.0] - 2026-11-15
 
 Speaks template contract **1** (pscaffold template `v0.1.x`).

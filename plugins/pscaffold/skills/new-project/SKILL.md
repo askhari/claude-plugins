@@ -61,7 +61,8 @@ Turn the decided brief into a working repository. Done means: the repo is genera
 These need a human (accounts, secrets, consoles). Write it to the final message, not a file:
 
 - GitHub: review and run `scripts/github-bootstrap.sh` (risk labels, `dev` environment,
-  auto-merge, branch protection requiring `ci` and `risk-label`).
+  auto-merge, merge commits only, branch protection requiring `ci` and `risk-label`). Merge
+  PRs with "Create a merge commit" so agent and human commits keep their own authors.
 - Secrets in the `dev` environment: `DEPLOY_HOST`, `DEPLOY_SSH_KEY` and `EXPO_TOKEN` (always);
   `DIGITALOCEAN_TOKEN`, `SPACES_ACCESS_KEY_ID`, `SPACES_SECRET_ACCESS_KEY` (digitalocean target).
 - Claude review on PRs: run `/install-github-app` in Claude Code (adds `ANTHROPIC_API_KEY` or

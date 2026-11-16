@@ -40,12 +40,16 @@ Everything is derived; nothing is stored by you.
    databases, so independent tasks can run in parallel; never run two tasks that edit the same
    hotspot at once (the plan's `Blocked by` already encodes this). Brief it with:
    - the task section from `tasks.md` verbatim, its risk tier, and the spec path;
+   - the model you dispatched it on and the task ID, for `just agent-identity <model> NNNN-MM`
+     (its commits carry the agent identity and `Agent-Model` / `Agent-Task` trailers);
    - anything learned from earlier tasks that this one needs (a renamed module, a decision
      recorded since the plan was written). Nothing else: the worker starts with a fresh
      context, and a short brief keeps it cheap.
 
    Where background subagents are not available, start one Claude Code session per task
-   (`claude --model <model> --agent implementer` in a worktree) with the same brief.
+   (`claude --model <model> --agent implementer` in a worktree) with the same brief. Any other
+   agent (a local model, another tool) follows the same procedure and names its model in
+   `just agent-identity`, e.g. `local/qwen3-coder-32b`.
 4. When a worker reports back, **judge it** from evidence, not from reading the code:
    - `gh pr checks <n>` is green;
    - `gh pr view <n> --json body,files,labels`: every "Done when" item is ticked, the pasted
@@ -58,11 +62,15 @@ Everything is derived; nothing is stored by you.
    learned. If it still fails on `opus`, stop dispatching it and turn it into a HITL item with
    what was tried. Tell the user about every escalation; repeated ones mean the plan
    underestimates the work.
-6. Merge policy follows the PR's risk label: `risk:low` → enable auto-merge once checks pass;
-   `risk:normal` → request the user's review; `risk:high` → request review and wait for the
-   user's explicit approval in chat. Never merge `risk:high` yourself.
+6. Merge policy follows the PR's risk label: `risk:low` → enable auto-merge once checks pass
+   (`gh pr merge <n> --auto --merge`); `risk:normal` → request the user's review;
+   `risk:high` → request review and wait for the user's explicit approval in chat. Never
+   merge `risk:high` yourself. Every merge is a merge commit (`--merge`), never squash or
+   rebase: those rewrite the agent's commits under the merger's name and `git blame` loses
+   which lines an agent wrote.
 7. Repeat until every task is done or only blocked/HITL tasks remain; then summarize what
-   shipped, which model did each task (and any escalation), what is waiting on the user, and
+   shipped, which model did each task (and any escalation; the `Agent-Model` trailers record
+   it: `git log --format='%h %(trailers:key=Agent-Task,valueonly,separator=) %(trailers:key=Agent-Model,valueonly,separator=)' main`), what is waiting on the user, and
    anything that suggests the spec or plan should change (offer `spec`/`plan` amendments
    rather than improvising scope).
 

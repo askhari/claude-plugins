@@ -79,7 +79,14 @@ Write only real decisions.
   infra_target: digitalocean   # digitalocean | vps
   github_owner: "<org or user>"
   bundle_id: "com.<owner>.<slug>"
+  agent_name: "<git author name for agent commits>"
+  agent_email: "<git author email for agent commits>"
   ```
+
+  Take `agent_name` / `agent_email` from the developer's git config
+  (`git config --get pscaffold.agentName`, `git config --get pscaffold.agentEmail`) when set;
+  otherwise ask once, suggesting `<github_owner>-agent`. Never write the developer's own
+  identity here: these keep agent commits apart from human ones.
 
 In `change`/`audit` mode on an existing repo, also list the concrete follow-ups (template
 update, CODEOWNERS change, new critical suite) and offer to hand them to `spec`/`plan`.

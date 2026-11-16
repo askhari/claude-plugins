@@ -50,5 +50,9 @@ become the new default for future products.
   agent on the model `plan` assigns per task — `haiku` for mechanical low-risk changes,
   `sonnet` by default, `opus` for new patterns, security, sync, migrations and high risk.
   A task that fails judgment twice moves one model up.
+- Agents commit under the product's agent identity (`agent_name` / `agent_email`), never the
+  developer's; each commit names its model and task in `Agent-Model:` / `Agent-Task:`
+  trailers, whatever model drives the agent (Claude or local). No Claude attribution lines.
+  PRs merge with merge commits only, so `git blame` separates agent and human lines.
 - Parallel tasks run in git worktrees. Each worktree gets its own databases on the main
   checkout's local Postgres cluster; ports are picked free, never fixed.
