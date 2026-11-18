@@ -65,7 +65,7 @@ These need a human (accounts, secrets, consoles). Write it to the final message,
   auto-merge, merge commits only, branch protection requiring `ci` and `risk-label`). Merge
   PRs with "Create a merge commit" so agent and human commits keep their own authors.
 - Secrets in the `dev` environment: `DEPLOY_HOST` (the platform host), `DEPLOY_SSH_KEY` (the
-  platform's CI key, `deploy` user only) and `EXPO_TOKEN`. The product needs no cloud
+  platform's CI key, `deploy` user only) and, with `mobile_builds: eas`, `EXPO_TOKEN`. The product needs no cloud
   provider tokens.
 - Claude review on PRs: run `/install-github-app` in Claude Code (adds `ANTHROPIC_API_KEY` or
   `CLAUDE_CODE_OAUTH_TOKEN`).
@@ -74,7 +74,10 @@ These need a human (accounts, secrets, consoles). Write it to the final message,
   `db.env` on the host) and add its Caddy site. Then, once on the host as `deploy`,
   `docker login ghcr.io` with a token that can read packages. `infra/README.md` lists what
   the product expects.
-- Expo: `npx eas-cli@latest init` inside `apps/app` to create the EAS project; because the
+- Local app builds (`mobile_builds: local`) instead of the Expo step below: install Xcode and
+  CocoaPods (`brew install cocoapods`), set `APP_API_URL` in `.env` to the dev API's public
+  URL, then `just app-ios "<simulator or device>"`. No Expo account is needed.
+- Expo (`mobile_builds: eas`): `npx eas-cli@latest init` inside `apps/app` to create the EAS project; because the
   config is dynamic, add the printed `extra.eas.projectId` to `app.config.ts` by hand.
 - Auto mode (user-level, once per machine): describe the GitHub org and cloud account in
   `~/.claude/settings.json` → `autoMode.environment`, or run `/auto-mode-setup`.

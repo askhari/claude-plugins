@@ -6,6 +6,16 @@ All notable changes to the `pscaffold` plugin. Format:
 
 ## [Unreleased]
 
+## [0.3.1] - 2026-11-18
+
+Speaks template contract **2** (pscaffold template `v0.2.x`; `mobile_builds` needs `v0.2.1`).
+
+### Added
+- `mobile_builds` (`eas` | `local`): `PREFERENCES.md` keeps EAS as the default and names
+  local builds as the supported opt-out; `architect` writes the answer; the `new-project`
+  checklist asks for `EXPO_TOKEN` and `eas init` only with EAS and lists the local-build
+  steps otherwise.
+
 ## [0.3.0] - 2026-11-18
 
 Speaks template contract **2** (pscaffold template `v0.2.x`).
