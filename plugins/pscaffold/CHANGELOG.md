@@ -6,6 +6,20 @@ All notable changes to the `pscaffold` plugin. Format:
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-11-18
+
+Speaks template contract **2** (pscaffold template `v0.2.x`).
+
+### Changed
+- **Breaking:** products deploy onto the shared platform. `PREFERENCES.md` drops Terraform
+  and the DigitalOcean / own-VPS choice; `architect` no longer asks for an infrastructure
+  target and writes `platform_product` instead of `infra_target`; `new-project` expects
+  contract 2.
+- `new-project` checklist: only `DEPLOY_HOST`, `DEPLOY_SSH_KEY` and `EXPO_TOKEN` as secrets,
+  no Terraform state bucket, and the dev host steps are replaced by adding the tenant on the
+  platform.
+- `PREFERENCES.md` pins PostgreSQL to major 18, the platform's.
+
 ## [0.2.1] - 2026-11-16
 
 Speaks template contract **1** (pscaffold template `v0.1.x`; agent identity needs `v0.1.1`).

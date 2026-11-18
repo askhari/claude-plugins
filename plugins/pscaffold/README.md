@@ -30,6 +30,7 @@ template's **contract** (recipe names, document layout, task table, PR conventio
 
 | Plugin version | Template contract | Template releases |
 |---|---|---|
+| 0.3.x | 2 | v0.2.x |
 | 0.2.x | 1 | v0.1.x |
 
 Changes: [CHANGELOG.md](CHANGELOG.md).
