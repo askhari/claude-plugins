@@ -44,7 +44,9 @@ become the new default for future products.
 - Local development uses the Devbox PostgreSQL on a port derived from the product slug, so
   several products run side by side; no Caddy locally.
 - CI/CD: GitHub Actions. The pull request is the gate; review effort scales with risk.
-- Mobile builds and OTA updates: EAS (Build, Submit, Update).
+- Mobile builds and OTA updates: EAS (Build, Submit, Update). A product may opt out with
+  `mobile_builds: local` (builds on the developer's machine with Xcode and Android Studio, no
+  Expo account, no mobile CI, no over-the-air updates); record that choice as an ADR.
 - Monorepo tooling: pnpm workspaces + Turborepo for TypeScript, `just` as the single entry point.
 
 ## Working with agents

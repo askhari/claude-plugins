@@ -31,7 +31,9 @@ existing ADRs settle unless the brief gives a reason to deviate.
 
 **A. Deviations from the preferences.** Does anything in the brief break a default (e.g. no
 mobile, heavy realtime, regulated data, SEO-critical public pages that need a separate site)?
-If not, say so and move on.
+If not, say so and move on. One deviation the template supports directly: building the apps
+locally instead of with EAS (`mobile_builds: local`). Do not offer it unprompted; choose it
+only when the brief or the user rules out an Expo account or cloud builds.
 
 **B. Cross-cutting concerns** — the part agents get wrong when it is left implicit:
 1. *Identity*: which sign-in methods for the MVP; single user vs organizations/tenants;
@@ -83,6 +85,7 @@ Write only real decisions.
   project_slug: "<kebab-case>"
   backend: go            # go | rust
   platform_product: "<slug without dashes>"   # the product's name on the shared platform
+  mobile_builds: eas     # eas | local
   github_owner: "<org or user>"
   bundle_id: "com.<owner>.<slug>"
   agent_name: "<git author name for agent commits>"
