@@ -13,7 +13,7 @@ become the new default for future products.
 - Languages (Go, Rust, Node) are installed by the developer (Node via fnm, Rust via rustup,
   Go via its own toolchain). Versions are pinned with standard repo files
   (`go.mod`, `rust-toolchain.toml`, `.node-version`, `packageManager`).
-- Support tools (just, terraform, tflint, copier, Postgres service, …) come from **Devbox**.
+- Support tools (just, copier, the local Postgres, linters, …) come from **Devbox**.
   Never install project tools globally.
 
 ## Architecture defaults
@@ -27,13 +27,22 @@ become the new default for future products.
 - **Auth inside the API**: email + password (argon2id) and social login (Google, Microsoft,
   Apple) via OIDC ID-token verification; the API issues its own short-lived access token and
   a rotating refresh token. Isolated `auth` module so it can be swapped for an external IdP.
-- Database: PostgreSQL (18+, native `uuidv7()`).
+- Database: PostgreSQL 18 (native `uuidv7()`): the same major on the shared platform, in the
+  local Devbox package and in CI. A product moves to a new major only after the platform has.
 
 ## Infrastructure and delivery
-- IaC: Terraform. Target: DigitalOcean or an own VPS — chosen per project on cost first,
-  then operational effort, then lock-in.
-- Environments: start with **dev only**; add `prod` by copying `infra/terraform/envs/dev`.
-  Anything real users touch (TestFlight included) counts as prod.
+- Every product deploys onto one **shared platform**, defined in its own repository (one
+  host with Docker Compose, one PostgreSQL server, one Caddy for TLS, per-product buckets).
+  A product repository creates no cloud resources and has no Terraform: it ships one API
+  container that joins the external Docker network `platform` and reads `DATABASE_URL` from
+  the `db.env` the platform writes in `/opt/platform/products/<product>-<env>/`. GitHub
+  Actions builds the image, pushes it to GHCR and deploys over SSH as `deploy`.
+- The platform knows a product by `platform_product`: lowercase, no dashes (it names the
+  database `<product>_<env>`); by default the slug without dashes.
+- Environments: start with **dev only**; `prod` is a second tenant on the same platform plus
+  a `deploy-prod` workflow. Anything real users touch (TestFlight included) counts as prod.
+- Local development uses the Devbox PostgreSQL on a port derived from the product slug, so
+  several products run side by side; no Caddy locally.
 - CI/CD: GitHub Actions. The pull request is the gate; review effort scales with risk.
 - Mobile builds and OTA updates: EAS (Build, Submit, Update).
 - Monorepo tooling: pnpm workspaces + Turborepo for TypeScript, `just` as the single entry point.

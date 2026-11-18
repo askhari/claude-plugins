@@ -16,7 +16,7 @@ workers run on cheaper models chosen per task by `plan`.
 
 Everything is derived; nothing is stored by you.
 
-- First check `.claude/pscaffold.json`: it must say `"contract": 1`, the template contract
+- First check `.claude/pscaffold.json`: it must say `"contract": 2`, the template contract
   this skill speaks. Otherwise stop: the product or the plugin needs updating (`copier update`
   in the product, or `claude plugin update pscaffold@askharilabs`).
 - Tasks: `docs/specs/NNNN-*/tasks.md` (ID, type, blocked-by, risk, model).

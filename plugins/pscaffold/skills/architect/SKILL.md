@@ -7,7 +7,7 @@ argument-hint: "[product directory] [new|change|audit]"
 # architect
 
 The stack is already decided by `PREFERENCES.md` (Expo universal app, Go or Rust API,
-PostgreSQL, OpenAPI contract, Terraform, GitHub Actions, EAS). Do not re-open it. Your job is
+PostgreSQL, OpenAPI contract, deployment onto the shared platform, GitHub Actions, EAS). Do not re-open it. Your job is
 the decisions that are product-specific and expensive to reverse, written down where agents
 will find them.
 
@@ -45,9 +45,15 @@ If not, say so and move on.
 5. *Notifications and background work*: push, email, scheduled jobs (→ a worker process?).
 6. *Anything else the brief implies*: payments, i18n, search, realtime.
 
-**C. Infrastructure target.** DigitalOcean or an own VPS. Compare on the user's weights —
-monthly cost first, operational effort (setup amortized) second, lock-in third — with
-rough numbers for the MVP size. Managed Postgres versus Postgres in the compose stack for dev.
+**C. Platform fit.** The target is settled: the shared platform from the preferences (API
+container only; PostgreSQL, TLS and buckets come from the platform). Do not ask where it
+runs. Settle only:
+- the product's name on the platform (`platform_product`): recommend the slug without dashes,
+  and ask whether the tenant already exists there under another name;
+- what the product needs from the platform beyond a database: a bucket (when B.4 says files),
+  a worker or scheduled job (B.5), more than the default 256 MB for the API container;
+- anything the platform cannot give (another region, a managed database, heavy compute). Only
+  then is it a deviation: write an ADR and tell the user the template will not generate it.
 Only `dev` exists at first; record when `prod` should be added (first external user, first
 TestFlight build).
 
@@ -67,16 +73,16 @@ Write only real decisions.
 - `docs/adr/NNNN-slug.md` — one per decision that is hard to reverse, surprising without
   context, and the result of a real trade-off. Sequential numbers, 1–3 sentences each; add
   "Considered options" only when the rejected options are worth remembering. Typical
-  outputs: sync conflict rules, tenancy model, infra target.
+  outputs: sync conflict rules, tenancy model, what the product needs from the platform.
 - `docs/brief.md` — append an `## Architecture` section with one-liners: deviations,
-  cross-cutting decisions, infra target, risk tiers, critical suites. Link the ADRs.
+  cross-cutting decisions, platform needs, risk tiers, critical suites. Link the ADRs.
 - `docs/copier-answers.yml` — the answers `new-project` will feed to copier:
 
   ```yaml
   project_name: "<Product name>"
   project_slug: "<kebab-case>"
   backend: go            # go | rust
-  infra_target: digitalocean   # digitalocean | vps
+  platform_product: "<slug without dashes>"   # the product's name on the shared platform
   github_owner: "<org or user>"
   bundle_id: "com.<owner>.<slug>"
   agent_name: "<git author name for agent commits>"

@@ -32,11 +32,12 @@ Turn the decided brief into a working repository. Done means: the repo is genera
    `<template source>` is `gh:askhari/pscaffold`; copier uses its newest release tag. Pass
    `--vcs-ref vX.Y.Z` only if the user asks for a specific release. When the user is
    developing the template, it is the path of their local pscaffold checkout instead.
-   After rendering, `.claude/pscaffold.json` must say `"contract": 1` (the template contract
+   After rendering, `.claude/pscaffold.json` must say `"contract": 2` (the template contract
    this plugin speaks, see the plugin README). If it says anything else, stop and tell the
    user to update the plugin (`claude plugin update pscaffold@askharilabs`).
    copier keeps `docs/brief.md` and `docs/adr/*` (they are in `_skip_if_exists`). Its
-   post-generation tasks install dependencies and generate code from the contract.
+   post-generation tasks install dependencies, generate code from the contract and format
+   the documents `kickoff` and `architect` wrote (`just format`).
 
 3. **Apply the risk profile** from the brief's `## Architecture` section:
    - `.github/CODEOWNERS`: add the owners for the high-risk paths.
@@ -45,8 +46,8 @@ Turn the decided brief into a working repository. Done means: the repo is genera
    - Risk labels (`risk:low|normal|high`) are created by `scripts/github-bootstrap.sh`; edit it
      only if the architect added tiers.
 
-4. **Verify.** `devbox run -- just verify` (copier's task already ran `just setup`; run it
-   again if it was skipped). Fix anything red —
+4. **Verify.** `devbox run -- just verify` (copier's tasks already ran `just setup` and
+   `just format`; run both if they were skipped). Fix anything red —
    it is the template's contract that a fresh project is green. If the fix belongs in the
    template, tell the user and describe the fix for pscaffold.
 
@@ -63,14 +64,16 @@ These need a human (accounts, secrets, consoles). Write it to the final message,
 - GitHub: review and run `scripts/github-bootstrap.sh` (risk labels, `dev` environment,
   auto-merge, merge commits only, branch protection requiring `ci` and `risk-label`). Merge
   PRs with "Create a merge commit" so agent and human commits keep their own authors.
-- Secrets in the `dev` environment: `DEPLOY_HOST`, `DEPLOY_SSH_KEY` and `EXPO_TOKEN` (always);
-  `DIGITALOCEAN_TOKEN`, `SPACES_ACCESS_KEY_ID`, `SPACES_SECRET_ACCESS_KEY` (digitalocean target).
+- Secrets in the `dev` environment: `DEPLOY_HOST` (the platform host), `DEPLOY_SSH_KEY` (the
+  platform's CI key, `deploy` user only) and `EXPO_TOKEN`. The product needs no cloud
+  provider tokens.
 - Claude review on PRs: run `/install-github-app` in Claude Code (adds `ANTHROPIC_API_KEY` or
   `CLAUDE_CODE_OAUTH_TOKEN`).
-- Terraform state bucket (digitalocean): create the Spaces bucket named in
-  `infra/terraform/envs/dev/backend.hcl` once, by hand; set the `DEPLOY_SSH_PUBLIC_KEY`
-  variable in the `dev` environment.
-- Dev host: follow `infra/README.md` (copy the compose files and `.env`, `docker login ghcr.io`).
+- Platform (in the platform's repository, not here; every change there needs the owner's
+  approval): add the `<platform_product>` / `dev` tenant, provision its database (this writes
+  `db.env` on the host) and add its Caddy site. Then, once on the host as `deploy`,
+  `docker login ghcr.io` with a token that can read packages. `infra/README.md` lists what
+  the product expects.
 - Expo: `npx eas-cli@latest init` inside `apps/app` to create the EAS project; because the
   config is dynamic, add the printed `extra.eas.projectId` to `app.config.ts` by hand.
 - Auto mode (user-level, once per machine): describe the GitHub org and cloud account in
